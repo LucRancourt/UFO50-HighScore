@@ -27,7 +27,10 @@ namespace _Project.Code.Utilities.Audio
         private void Start()
         {
             LoadVolume();
-            PlayMusic(defaultMusic);
+
+            if (defaultMusic)
+                PlayMusic(defaultMusic);
+
             SceneManager.activeSceneChanged += Reset;
         }
 

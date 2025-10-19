@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _Project.Code.Gameplay.Input
 {
-    [CreateAssetMenu(fileName = "InputProfile", menuName = "ScriptableObjects/Input/Input Profile")]
+    [CreateAssetMenu(fileName = "InputProfile", menuName = "Scriptable Objects/Input/Input Profile")]
     public class InputProfile : ScriptableObject
     {
         [field: SerializeField, Header("Sensitivity")]

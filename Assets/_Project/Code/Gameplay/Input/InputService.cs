@@ -41,21 +41,6 @@ namespace _Project.Code.Gameplay.Input
             EventBus.Instance.Publish(new MoveInputEvent { Input = Vector2.zero });
         }
 
-        private void HandleLookPerformed(InputAction.CallbackContext context)
-        {
-            EventBus.Instance.Publish(new LookInputEvent { Input = context.ReadValue<Vector2>() });
-        }
-
-        private void HandleLookCanceled(InputAction.CallbackContext context)
-        {
-            EventBus.Instance.Publish(new LookInputEvent { Input = Vector2.zero });
-        }
-
-        private void HandleInteractPerformed(InputAction.CallbackContext context)
-        {
-            EventBus.Instance.Publish(new InteractInputEvent());
-        }
-
         private void HandleFirePerformed(InputAction.CallbackContext context)
         {
             EventBus.Instance.Publish(new FireInputEvent());
