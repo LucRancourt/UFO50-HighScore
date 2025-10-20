@@ -14,7 +14,6 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
             ExecuteMovement();
         }
 
-
         private void ExecuteMovement()
         {
             var targetSpeed = _controller.MovementProfile.WalkSpeed;

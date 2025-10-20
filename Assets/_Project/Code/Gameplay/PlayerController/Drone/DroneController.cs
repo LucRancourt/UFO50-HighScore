@@ -14,8 +14,8 @@ using _Project.Code.Core.StateMachine;
 
 namespace _Project.Code.Gameplay.PlayerController.Drone
 {
-    [RequireComponent(typeof(CharacterControllerMotor))]
-    public class DroneController : BasePlayerController
+    [RequireComponent(typeof(CharacterControllerMotor), typeof(SpriteRenderer))]
+    public class DroneController : BasePlayerController, IDamageable
     {
         [Header("PlayerController Settings")]
         [field: SerializeField] public DroneMovementProfile MovementProfile { get; private set; }
@@ -28,6 +28,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
 
         // Shooter specific properties
+        private SpriteRenderer _spriteRenderer;
         [SerializeField] private ProjectileBase projectilePrefab;
         [SerializeField] private float shootDelay = 0.5f;
         private float _currentShootDelay;
@@ -47,6 +48,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private void Awake()
         {
             _motor = GetComponent<CharacterControllerMotor>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+
             _currentShootDelay = shootDelay;
         }
 
@@ -95,6 +98,11 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             return -transform.right;
         }
 
+        public void ColorSwitch(Color color)
+        {
+            _spriteRenderer.color = color;
+        }
+
         public void FireProjectile()
         {
             if (_currentShootDelay > 0.0f) return;
@@ -102,6 +110,21 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             _currentShootDelay = shootDelay;
 
             var projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
+            projectile.GetComponent<SpriteRenderer>().color = _spriteRenderer.color;
+
+
+            Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
+            s = Mathf.Clamp(s - 0.025f, 0.0f, s);
+
+            if (s < 0.1f)
+                s = 0.0f;
+
+            _spriteRenderer.color = Color.HSVToRGB(h, s, v);
+        }
+
+        public void OnTakeDamage(Color colorOfHitter)
+        {
+
         }
 
         protected override void OnDestroy()

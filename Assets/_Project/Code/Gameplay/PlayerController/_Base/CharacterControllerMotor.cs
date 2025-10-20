@@ -11,6 +11,7 @@ namespace _Project.Code.Gameplay.PlayerController._Base
         private void Awake()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _rigidbody2D.gravityScale = 0.0f;
         }
 
         public void Move(Vector2 direction, float speed)
