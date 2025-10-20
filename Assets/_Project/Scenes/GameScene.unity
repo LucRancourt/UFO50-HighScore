@@ -1029,7 +1029,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -3898792104129719440, guid: b42984d8003cbb54a9d3fef1067f5fa9, type: 3}
-  m_Color: {r: 0, g: 0.97940683, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.6666665, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1590,6 +1590,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitpoints: 10
   hpLossOnHit: 1
+  score: 0
+  moveSpeed: 0
+  fireSpeed: 0
 --- !u!50 &1150719246
 Rigidbody2D:
   serializedVersion: 5
@@ -2285,7 +2288,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 6610624371119419830, guid: afadf59353fef7d4b98abfdf20c0b542, type: 3}
-  m_Color: {r: 0, g: 0.9803922, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.666667, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2324,6 +2327,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitpoints: 10
   hpLossOnHit: 1
+  score: 0
+  moveSpeed: 0
+  fireSpeed: 0
 --- !u!50 &1786651728
 Rigidbody2D:
   serializedVersion: 5

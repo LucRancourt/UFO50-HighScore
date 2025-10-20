@@ -109,8 +109,9 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
             _currentShootDelay = shootDelay;
 
-            var projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
-            projectile.GetComponent<SpriteRenderer>().color = _spriteRenderer.color;
+            ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
+            projectile.ColorSwitch(_spriteRenderer.color);
+            projectile.OnHit += ReturnProjectile;
 
 
             Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
@@ -120,6 +121,11 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
                 s = 0.0f;
 
             _spriteRenderer.color = Color.HSVToRGB(h, s, v);
+        }
+
+        private void ReturnProjectile(ProjectileBase projectile)
+        {
+            _projectilePoolFactory.Return(projectile);
         }
 
         public void OnTakeDamage(Color colorOfHitter)

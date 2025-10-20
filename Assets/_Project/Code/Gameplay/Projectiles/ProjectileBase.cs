@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using _Project.Code.Core.Pool;
+using System;
 
 
 namespace _Project.Code.Gameplay.Projectiles
@@ -8,27 +9,37 @@ namespace _Project.Code.Gameplay.Projectiles
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(SpriteRenderer))]
     public class ProjectileBase : MonoBehaviour, IPoolable
     {
-        [SerializeField] private LayerMask collisionLayers;
+        public event Action<ProjectileBase> OnHit;
+
         [SerializeField] private ProjectileType projectileType;
 
         [SerializeField] private float defaultSpeed = 10.0f;
         private float _currentSpeed;
 
         private Rigidbody2D _rigidbody2D;
+        private SpriteRenderer _spriteRenderer;
 
-        private void Start()
+        private bool _hasBeenInitialized = false;
+
+        private void Initialize()
         {
+            _currentSpeed = defaultSpeed;
+
+            if (_hasBeenInitialized) return;
+
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
 
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+
             GetComponent<BoxCollider2D>().isTrigger = true;
 
-            _currentSpeed = defaultSpeed;
+            _hasBeenInitialized = true;
         }
 
         public void OnSpawnFromPool()
         {
-            _currentSpeed = defaultSpeed;
+            Initialize();
         }
 
         private void FixedUpdate()
@@ -40,7 +51,7 @@ namespace _Project.Code.Gameplay.Projectiles
             _rigidbody2D.MovePosition(moveVector);
         }
 
-        public void ColorSwitch()
+        public void ColorSwitch(Color color)
         {
             _spriteRenderer.color = color;
         }
@@ -51,6 +62,8 @@ namespace _Project.Code.Gameplay.Projectiles
             {
                 damaged.OnTakeDamage(_spriteRenderer.color);
             }
+
+            OnHit?.Invoke(this);
         }
 
         public void OnReturnToPool()
