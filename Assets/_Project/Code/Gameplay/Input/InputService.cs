@@ -26,6 +26,7 @@ namespace _Project.Code.Gameplay.Input
             //_inputActions.Gameplay.Look.canceled += HandleLookCanceled;
             //_inputActions.Gameplay.Interact.performed += HandleInteractPerformed;
             _inputActions.Gameplay.Fire.performed += HandleFirePerformed;
+            _inputActions.Gameplay.Fire.canceled += HandleFireCanceled;
 
             _inputActions.Gameplay.Enable();
             
@@ -43,7 +44,11 @@ namespace _Project.Code.Gameplay.Input
 
         private void HandleFirePerformed(InputAction.CallbackContext context)
         {
-            EventBus.Instance.Publish(new FireInputEvent());
+            EventBus.Instance.Publish(new FireInputEvent { isFiring = true });
+        }
+        private void HandleFireCanceled(InputAction.CallbackContext context)
+        {
+            EventBus.Instance.Publish(new FireInputEvent { isFiring = false });
         }
 
         public void EnableGameplayActions()
@@ -74,6 +79,7 @@ namespace _Project.Code.Gameplay.Input
                 //_inputActions.Gameplay.Look.canceled -= HandleLookCanceled;
                 //_inputActions.Gameplay.Interact.performed -= HandleInteractPerformed;
                 _inputActions.Gameplay.Fire.performed -= HandleFirePerformed;
+                _inputActions.Gameplay.Fire.canceled -= HandleFireCanceled;
 
                 _inputActions.Gameplay.Disable();
                 _inputActions.Dispose();

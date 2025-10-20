@@ -6,6 +6,7 @@ using _Project.Code.Gameplay.Player;
 using _Project.Code.Gameplay.PlayerController._Base;
 using _Project.Code.Gameplay.PlayerController._Profile;
 using _Project.Code.Gameplay.PlayerController.Drone.States;
+using _Project.Code.Gameplay.Projectiles;
 
 using _Project.Code.Core.ServiceLocator;
 using _Project.Code.Core.StateMachine;
@@ -21,10 +22,16 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         private CharacterControllerMotor _motor;
         private PlayerService _playerService;
-        private PooledFactory<> _projectilePoolFactory = new();
 
         public CharacterControllerMotor Motor => _motor;
         public Vector2 MoveInput { get; set; }
+
+
+        // Shooter specific properties
+        [SerializeField] private ProjectileBase projectilePrefab;
+        [SerializeField] private float shootDelay = 0.5f;
+        private float _currentShootDelay;
+        private PooledFactory<ProjectileBase> _projectilePoolFactory;
 
 
         // Drone specific properties
@@ -40,11 +47,14 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private void Awake()
         {
             _motor = GetComponent<CharacterControllerMotor>();
+            _currentShootDelay = shootDelay;
         }
 
         protected override void Start()
         {
             base.Start();
+
+            _projectilePoolFactory = new PooledFactory<ProjectileBase>(projectilePrefab);
 
             _playerService = ServiceLocator.Get<PlayerService>();
             _playerService.RegisterPlayer(this);
@@ -58,6 +68,12 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             StateMachine.AddState(new DroneMovingState(this));
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            _currentShootDelay -= Time.deltaTime;
+        }
 
         public Vector3 GetForwardDirection()
         {
@@ -81,6 +97,10 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         public void FireProjectile()
         {
+            if (_currentShootDelay > 0.0f) return;
+
+            _currentShootDelay = shootDelay;
+
             var projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
         }
 

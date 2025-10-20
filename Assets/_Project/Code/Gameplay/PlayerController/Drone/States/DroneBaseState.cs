@@ -12,6 +12,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
         protected readonly DroneController _controller;
         protected FiniteStateMachine<IState> _stateMachine => _controller.StateMachine;
 
+        private static bool _isFiring;
+
         //===============================================================================================================================================
 
         protected DroneBaseState(DroneController controller) { _controller = controller; }
@@ -29,7 +31,13 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
 
         private void HandleFire(FireInputEvent evt)
         {
-            
+            _isFiring = evt.isFiring;
+        }
+
+        public override void Update()
+        {
+            if (_isFiring)
+                _controller.FireProjectile();
         }
 
         public override void Exit()
