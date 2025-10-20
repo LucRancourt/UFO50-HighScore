@@ -9,7 +9,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
     {
         public DroneMovingState(DroneController controller) : base(controller) { }
 
-        public override void Update()
+        public override void FixedUpdate()
         {
             ExecuteMovement();
         }

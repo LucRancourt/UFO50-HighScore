@@ -1,5 +1,6 @@
 using UnityEngine;
 
+using _Project.Code.Core.Factory;
 using _Project.Code.Gameplay.Input;
 using _Project.Code.Gameplay.Player;
 using _Project.Code.Gameplay.PlayerController._Base;
@@ -20,6 +21,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         private CharacterControllerMotor _motor;
         private PlayerService _playerService;
+        private PooledFactory<> _projectilePoolFactory = new();
 
         public CharacterControllerMotor Motor => _motor;
         public Vector2 MoveInput { get; set; }
@@ -77,10 +79,16 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             return -transform.right;
         }
 
+        public void FireProjectile()
+        {
+            var projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
+        }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
+
+            _projectilePoolFactory.Clear();
 
             _playerService?.UnregisterPlayer(this);
         }
