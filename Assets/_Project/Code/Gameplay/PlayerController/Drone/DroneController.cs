@@ -110,6 +110,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             _currentShootDelay = shootDelay;
 
             ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
+            projectile.SetDirection();
             projectile.ColorSwitch(_spriteRenderer.color);
             if (!projectile.HasOnHitBeenAdded)
                 projectile.OnHit += ReturnProjectile;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 using _Project.Code.Core.Pool;
 using System;
-
+using _Project.Code.Gameplay.PlayerController.Drone;
 
 namespace _Project.Code.Gameplay.Projectiles
 {
@@ -12,6 +12,7 @@ namespace _Project.Code.Gameplay.Projectiles
         public event Action<ProjectileBase> OnHit;
 
         [SerializeField] private ProjectileType projectileType;
+        private Vector3 _direction;
 
         [SerializeField] private float defaultSpeed = 10.0f;
         private float _currentSpeed;
@@ -22,20 +23,56 @@ namespace _Project.Code.Gameplay.Projectiles
         private bool _hasBeenInitialized = false;
         public bool HasOnHitBeenAdded { get; private set; } = false;
 
+        private DroneController _player;
+
         private void Initialize()
         {
+            if (!_hasBeenInitialized)
+            {
+                _rigidbody2D = GetComponent<Rigidbody2D>();
+                _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+
+                _player = FindFirstObjectByType<DroneController>();
+
+                _spriteRenderer = GetComponent<SpriteRenderer>();
+
+                GetComponent<BoxCollider2D>().isTrigger = true;
+
+                _hasBeenInitialized = true;
+            }
+
             _currentSpeed = defaultSpeed;
+        }
 
-            if (_hasBeenInitialized) return;
+        public void SetProjectTileType(ProjectileType projType)
+        {
+            projectileType = projType;
+        }
 
-            _rigidbody2D = GetComponent<Rigidbody2D>();
-            _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+        public void SetDirection()
+        {
+            switch (projectileType)
+            {
+                case ProjectileType.Up:
+                    _direction = Vector2.up;
+                    break;
 
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+                case ProjectileType.Down:
+                    _direction = -Vector2.up;
+                    break;
 
-            GetComponent<BoxCollider2D>().isTrigger = true;
+                case ProjectileType.Left:
+                    _direction = -Vector2.right;
+                    break;
 
-            _hasBeenInitialized = true;
+                case ProjectileType.Right:
+                    _direction = Vector2.right;
+                    break;
+
+                case ProjectileType.PlayerTarget:
+                    _direction = (Vector2)(_player.transform.position - transform.position);
+                    break;
+            }
         }
 
         public void OnSpawnFromPool()
@@ -45,7 +82,7 @@ namespace _Project.Code.Gameplay.Projectiles
 
         private void FixedUpdate()
         {
-            Vector2 moveVector = transform.up.normalized * _currentSpeed * Time.deltaTime;
+            Vector2 moveVector = _direction.normalized * _currentSpeed * Time.fixedDeltaTime;
 
             moveVector += _rigidbody2D.position;
 
@@ -73,7 +110,7 @@ namespace _Project.Code.Gameplay.Projectiles
         }
     }
 
-    enum ProjectileType
+    public enum ProjectileType
     {
         Up,
         Down,

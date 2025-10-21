@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Splines;
 
 using _Project.Code.Core.Pool;
-
+using _Project.Code.Gameplay.Projectiles;
+using _Project.Code.Core.Factory;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Rigidbody2D))]
 [RequireComponent(typeof(SplineAnimate))]
@@ -15,6 +16,10 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody2D;
     private SplineAnimate _splineAnimate;
+
+    private PooledFactory<ProjectileBase> _projectilePoolFactory;
+    [SerializeField] private ProjectileBase projectilePrefab;
+    [SerializeField] private ProjectileType projectileType;
 
     [SerializeField] private float hitpoints = 10.0f;
     private float _currentHitpoints;
@@ -37,8 +42,12 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     {
         if (_hasBeenInitialized) return;
 
+        projectilePrefab.SetProjectTileType(projectileType);
+        _projectilePoolFactory = new PooledFactory<ProjectileBase>(projectilePrefab);
+
         _splineAnimate = GetComponent<SplineAnimate>();
         _splineAnimate.Alignment = SplineAnimate.AlignmentMode.None;
+        _splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
         _splineAnimate.PlayOnAwake = false;
         _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
 
@@ -88,8 +97,8 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
         // Get difficulty modifier from a singleton in scene
 
-        _fireDelay = defaultFireSpeed;
-        _splineAnimate.MaxSpeed = defaultMoveSpeed;
+        ResetFireDelay();
+        _splineAnimate.MaxSpeed = defaultMoveSpeed;  // + or * multiplier (probs +)
 
         _currentHitpoints = hitpoints;
 
@@ -99,5 +108,35 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     public void OnReturnToPool()
     {
         _splineAnimate.Restart(false);
+    }
+
+    private void ResetFireDelay()
+    {
+        _fireDelay = defaultFireSpeed; // - modifier
+    }
+
+    private void Update()
+    {
+        _fireDelay -= Time.deltaTime;
+
+        if (_fireDelay <= 0.0f)
+            FireProjectile();
+    }
+
+    private void FireProjectile()
+    {
+        ResetFireDelay();
+
+        ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
+        projectile.SetDirection();
+
+        projectile.ColorSwitch(_spriteRenderer.color);
+        if (!projectile.HasOnHitBeenAdded)
+            projectile.OnHit += ReturnProjectile;
+    }
+
+    private void ReturnProjectile(ProjectileBase projectile)
+    {
+        _projectilePoolFactory.Return(projectile);
     }
 }
