@@ -23,6 +23,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
     [SerializeField] private float defaultMoveSpeed;
     [SerializeField] private float defaultFireSpeed;
+    private float _fireDelay;
 
     private bool _hasBeenInitialized = false;
 
@@ -82,8 +83,9 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
         // Get difficulty modifier from a singleton in scene
 
-        fireSpeed = 0.0f;
-        moveSpeed = 0.0f;
+        _fireDelay = defaultFireSpeed;
+        _splineAnimate.MaxSpeed = defaultMoveSpeed;
+
         _currentHitpoints = hitpoints;
     }
 
