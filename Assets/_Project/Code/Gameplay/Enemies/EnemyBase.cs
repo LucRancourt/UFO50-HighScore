@@ -37,14 +37,19 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     {
         if (_hasBeenInitialized) return;
 
+        _splineAnimate = GetComponent<SplineAnimate>();
+        _splineAnimate.Alignment = SplineAnimate.AlignmentMode.None;
+        _splineAnimate.PlayOnAwake = false;
+        _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        transform.rotation = Quaternion.Euler(Vector3.zero);
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         _rigidbody2D.gravityScale = 0.0f;
-
-        _splineAnimate = GetComponent<SplineAnimate>();
 
         _hasBeenInitialized = true;
     }
@@ -87,9 +92,12 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         _splineAnimate.MaxSpeed = defaultMoveSpeed;
 
         _currentHitpoints = hitpoints;
+
+        _splineAnimate.Play();
     }
 
     public void OnReturnToPool()
     {
+        _splineAnimate.Restart(false);
     }
 }
