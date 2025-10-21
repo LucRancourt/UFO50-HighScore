@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bbc30660b5c2e5c48b891e69fdfb8e89
+guid: 6336dddc1748e124599f158e3208949c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4967929754096327599
-    second: Boss_rightArm_0
+      213: 5882051540596410508
+    second: Chara_Enemy_2 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss_rightArm_0
+      name: Chara_Enemy_2 1_0
       rect:
         serializedVersion: 2
-        x: 842
-        y: 359
-        width: 236
-        height: 362
+        x: 454
+        y: 97
+        width: 1007
+        height: 903
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fab51064ac1a1f440800000000000000
-      internalID: 4967929754096327599
+      spriteID: c88c9c336be31a150800000000000000
+      internalID: 5882051540596410508
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss_rightArm_0: 4967929754096327599
+      Chara_Enemy_2 1_0: 5882051540596410508
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

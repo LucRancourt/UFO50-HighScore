@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0c7fcca365c9ac44fa2289df432dcf39
+guid: c4197812812f0ed4ea94a4e8dc7bc3cb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2575223311125518809
-    second: Boss_leftArm_0
+      213: -8078884918392863532
+    second: Chara_Boss_rightHand_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss_leftArm_0
+      name: Chara_Boss_rightHand_0
       rect:
         serializedVersion: 2
-        x: 857
-        y: 360
-        width: 207
-        height: 359
+        x: 721
+        y: 253
+        width: 427
+        height: 499
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9d911f415f70db320800000000000000
-      internalID: 2575223311125518809
+      spriteID: 4d4cee178f802ef80800000000000000
+      internalID: -8078884918392863532
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss_leftArm_0: 2575223311125518809
+      Chara_Boss_rightHand_0: -8078884918392863532
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -3,26 +3,8 @@ guid: 0eb79fd0fb39be84fba6e058fa551123
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7179783546630306128
-    second: chara_Boss_0
-  - first:
-      213: -5392383940952006351
-    second: chara_Boss_1
-  - first:
-      213: -2175253315331314660
-    second: chara_Boss_2
-  - first:
-      213: 575606660238844807
-    second: chara_Boss_3
-  - first:
-      213: 6897226066108353314
-    second: chara_Boss_4
-  - first:
-      213: 5103961354841490351
-    second: chara_Boss_5
-  - first:
-      213: -4121135502516397923
-    second: chara_Boss_6
+      213: -7180678739813968871
+    second: Chara_Boss_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -118,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chara_Boss_0
+      name: Chara_Boss_0
       rect:
         serializedVersion: 2
-        x: 1610
-        y: 976
-        width: 9
-        height: 9
+        x: 253
+        y: 45
+        width: 1414
+        height: 982
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,140 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b608ea87e84c5c90800000000000000
-      internalID: -7179783546630306128
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chara_Boss_1
-      rect:
-        serializedVersion: 2
-        x: 1619
-        y: 982
-        width: 15
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 131e80330676a25b0800000000000000
-      internalID: -5392383940952006351
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chara_Boss_2
-      rect:
-        serializedVersion: 2
-        x: 1580
-        y: 957
-        width: 24
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c1caf2b72a2ffc1e0800000000000000
-      internalID: -2175253315331314660
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chara_Boss_3
-      rect:
-        serializedVersion: 2
-        x: 1603
-        y: 971
-        width: 8
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 783a2e13537fcf700800000000000000
-      internalID: 575606660238844807
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chara_Boss_4
-      rect:
-        serializedVersion: 2
-        x: 421
-        y: 115
-        width: 1078
-        height: 839
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 22b04f5609ed7bf50800000000000000
-      internalID: 6897226066108353314
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chara_Boss_5
-      rect:
-        serializedVersion: 2
-        x: 1509
-        y: 914
-        width: 17
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fa306ae6fc9e4d640800000000000000
-      internalID: 5103961354841490351
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chara_Boss_6
-      rect:
-        serializedVersion: 2
-        x: 1526
-        y: 923
-        width: 56
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d98524d5819cec6c0800000000000000
-      internalID: -4121135502516397923
+      spriteID: 91450332bba195c90800000000000000
+      internalID: -7180678739813968871
       vertices: []
       indices: 
       edges: []
@@ -285,13 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      chara_Boss_0: -7179783546630306128
-      chara_Boss_1: -5392383940952006351
-      chara_Boss_2: -2175253315331314660
-      chara_Boss_3: 575606660238844807
-      chara_Boss_4: 6897226066108353314
-      chara_Boss_5: 5103961354841490351
-      chara_Boss_6: -4121135502516397923
+      Chara_Boss_0: -7180678739813968871
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
