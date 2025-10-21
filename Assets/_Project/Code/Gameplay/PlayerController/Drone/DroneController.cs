@@ -111,7 +111,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
             ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
             projectile.ColorSwitch(_spriteRenderer.color);
-            projectile.OnHit += ReturnProjectile;
+            if (!projectile.HasOnHitBeenAdded)
+                projectile.OnHit += ReturnProjectile;
 
 
             Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);

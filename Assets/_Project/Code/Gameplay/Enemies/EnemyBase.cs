@@ -7,7 +7,6 @@ using _Project.Code.Core.Pool;
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Rigidbody2D))]
 public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 {
-    public event Action OnKilledByPlayer;
     public event Action OnDestroyed;
 
     private SpriteRenderer _spriteRenderer;
@@ -15,21 +14,30 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     [SerializeField] private float hitpoints = 10.0f;
     private float _currentHitpoints;
     [SerializeField] private float hpLossOnHit = 1.0f;
-    [SerializeField] private int score;
+    [SerializeField] private int score = 1;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float fireSpeed;
 
+    private bool _hasBeenInitialized = false;
+
 
     protected virtual void Awake()
     {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (_hasBeenInitialized) return;
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         _rigidbody2D.gravityScale = 0.0f;
 
-        _currentHitpoints = hitpoints;
+        _hasBeenInitialized = true;
     }
 
     public void OnTakeDamage(Color colorOfHitter)
@@ -54,12 +62,13 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     {
         // Score Manager add score
 
-        OnKilledByPlayer?.Invoke();
+        ScoreManager.Instance.AddScore(score);
         OnDestroyed?.Invoke();
     }
 
     public void OnSpawnFromPool()
     {
+        Initialize();
 
 
         // Get difficulty modifier from a singleton in scene

@@ -20,6 +20,7 @@ namespace _Project.Code.Gameplay.Projectiles
         private SpriteRenderer _spriteRenderer;
 
         private bool _hasBeenInitialized = false;
+        public bool HasOnHitBeenAdded { get; private set; } = false;
 
         private void Initialize()
         {
@@ -58,7 +59,7 @@ namespace _Project.Code.Gameplay.Projectiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent<IDamageable>(out IDamageable damaged))
+            if (collision.TryGetComponent(out IDamageable damaged))
             {
                 damaged.OnTakeDamage(_spriteRenderer.color);
             }
@@ -68,7 +69,7 @@ namespace _Project.Code.Gameplay.Projectiles
 
         public void OnReturnToPool()
         {
-
+            HasOnHitBeenAdded = true;
         }
     }
 

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2610e87b52212224fa67c434f4814296, type: 3}
   m_Name: DroneMovementProfile
   m_EditorClassIdentifier: 
-  <WalkSpeed>k__BackingField: 7
+  <WalkSpeed>k__BackingField: 6

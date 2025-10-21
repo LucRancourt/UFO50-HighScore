@@ -420,6 +420,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &529137785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 529137787}
+  - component: {fileID: 529137786}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &529137786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529137785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d331ae4fe3d79084da65fde9d2913ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &529137787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529137785}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.4348912, y: 0.4149982, z: -0.041336387}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &535772485
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +541,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1514,7 +1558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitpoints: 10
   hpLossOnHit: 1
-  score: 0
+  score: 7
   moveSpeed: 0
   fireSpeed: 0
 --- !u!50 &1150719246
@@ -1765,7 +1809,7 @@ GameObject:
   - component: {fileID: 1353805279}
   - component: {fileID: 1353805278}
   - component: {fileID: 1353805277}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IMG_0035_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1856,7 +1900,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitpoints: 10
   hpLossOnHit: 1
-  score: 0
+  score: 5
   moveSpeed: 0
   fireSpeed: 0
 --- !u!50 &1353805278
@@ -2308,7 +2352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitpoints: 10
   hpLossOnHit: 1
-  score: 0
+  score: 100
   moveSpeed: 1
   fireSpeed: 1
 --- !u!50 &1786651728
@@ -2515,3 +2559,4 @@ SceneRoots:
   - {fileID: 535772489}
   - {fileID: 544520892}
   - {fileID: 1065134404}
+  - {fileID: 529137787}
