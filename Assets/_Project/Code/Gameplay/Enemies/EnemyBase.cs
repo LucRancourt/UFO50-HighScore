@@ -1,23 +1,28 @@
 using System;
 using UnityEngine;
 
+using UnityEngine.Splines;
+
 using _Project.Code.Core.Pool;
 
 
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Rigidbody2D))]
+[RequireComponent(typeof(SplineAnimate))]
 public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 {
     public event Action OnDestroyed;
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody2D;
+    private SplineAnimate _splineAnimate;
+
     [SerializeField] private float hitpoints = 10.0f;
     private float _currentHitpoints;
     [SerializeField] private float hpLossOnHit = 1.0f;
     [SerializeField] private int score = 1;
 
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float fireSpeed;
+    [SerializeField] private float defaultMoveSpeed;
+    [SerializeField] private float defaultFireSpeed;
 
     private bool _hasBeenInitialized = false;
 
@@ -34,8 +39,11 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         _rigidbody2D.gravityScale = 0.0f;
+
+        _splineAnimate = GetComponent<SplineAnimate>();
 
         _hasBeenInitialized = true;
     }
@@ -57,6 +65,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         if (_currentHitpoints <= 0.0f)
             Die();
     }
+
 
     private void Die()
     {
