@@ -11,7 +11,7 @@ using _Project.Code.Core.Factory;
 [RequireComponent(typeof(SplineAnimate))]
 public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 {
-    public event Action OnDestroyed;
+    public event Action<EnemyBase> OnDestroyed;
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody2D;
@@ -48,8 +48,9 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         _splineAnimate = GetComponent<SplineAnimate>();
         _splineAnimate.Alignment = SplineAnimate.AlignmentMode.None;
         _splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
-        _splineAnimate.PlayOnAwake = false;
+        //_splineAnimate.PlayOnAwake = false;
         _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
+        _splineAnimate.Completed += DieWithoutScore;
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -87,7 +88,12 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         // Score Manager add score
 
         ScoreManager.Instance.AddScore(score);
-        OnDestroyed?.Invoke();
+        OnDestroyed?.Invoke(this);
+    }
+
+    private void DieWithoutScore()
+    {
+        OnDestroyed?.Invoke(this);
     }
 
     public void OnSpawnFromPool()
@@ -96,6 +102,8 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
 
         // Get difficulty modifier from a singleton in scene
+
+        _splineAnimate.Restart(false);
 
         ResetFireDelay();
         _splineAnimate.MaxSpeed = defaultMoveSpeed;  // + or * multiplier (probs +)
@@ -107,7 +115,6 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
     public void OnReturnToPool()
     {
-        _splineAnimate.Restart(false);
     }
 
     private void ResetFireDelay()
