@@ -1,4 +1,6 @@
+using _Project.Code.Core.Events;
 using _Project.Code.Core.Factory;
+using _Project.Code.Gameplay.GameManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     private List<PooledFactory<EnemyBase>> _enemyPool = new List<PooledFactory<EnemyBase>>();
     [Tooltip("Keep them in order!")]
     [SerializeField] private EnemyBase[] allEnemyPrefabs;
+    [SerializeField] private float startDelay = 3.0f;
 
     private int _waveIndex;
     private int _activeEnemies = -1;
@@ -21,13 +24,19 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        Reset();
-        SpawnNextWave();
+        EventBus.Instance?.Subscribe<GameStateChangedEvent>(this, Reset);
     }
 
-    public void Reset()
+    public void Reset(GameStateChangedEvent state)
     {
+        if (state.StateName != "Gameplay") return;
+
         _activeEnemies = -1;
+
+        foreach (PooledFactory<EnemyBase> pool in _enemyPool)
+        {
+            pool.Clear();
+        }
 
         _enemyPool.Clear();
 
@@ -37,6 +46,8 @@ public class EnemyManager : MonoBehaviour
         }
 
         _waveIndex = 0;
+
+        Invoke("SpawnNextWave", startDelay);
     }
 
     public void SpawnNextWave()

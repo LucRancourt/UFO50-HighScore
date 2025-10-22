@@ -10,7 +10,8 @@ using _Project.Code.Gameplay.Projectiles;
 
 using _Project.Code.Core.ServiceLocator;
 using _Project.Code.Core.StateMachine;
-
+using _Project.Code.Gameplay.GameManagement;
+using _Project.Code.Core.Events;
 
 namespace _Project.Code.Gameplay.PlayerController.Drone
 {
@@ -22,6 +23,10 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         private CharacterControllerMotor _motor;
         private PlayerService _playerService;
+
+        private int _maxHealth = 3;
+        private int _currentHealth;
+        private Vector3 _startPos;
 
         public CharacterControllerMotor Motor => _motor;
         public Vector2 MoveInput { get; set; }
@@ -51,6 +56,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
             _currentShootDelay = shootDelay;
+
+            _startPos = transform.position;
         }
 
         protected override void Start()
@@ -61,6 +68,19 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
             _playerService = ServiceLocator.Get<PlayerService>();
             _playerService.RegisterPlayer(this);
+
+            EventBus.Instance.Subscribe<GameStateChangedEvent>(this, Reset);
+        }
+
+
+        public void OnTakeDamage(Color colorOfHitter)
+        {
+            ServiceLocator.Get<GameManagementService>().TransitionToPaused();
+
+            _currentHealth--;
+
+            if (_currentHealth <= 0)
+                ServiceLocator.Get<GameManagementService>().TransitionToMenu();
         }
 
         public override void Initialize()
@@ -69,6 +89,16 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             StateMachine = new FiniteStateMachine<IState>(idleState);
 
             StateMachine.AddState(new DroneMovingState(this));
+        }
+
+        private void Reset(GameStateChangedEvent gameState)
+        {
+            if (gameState.StateName == "Gameplay")
+            {
+                _spriteRenderer.color = Color.white;
+                _currentHealth = _maxHealth;
+                transform.position = _startPos;
+            }
         }
 
         protected override void Update()
@@ -128,11 +158,6 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private void ReturnProjectile(ProjectileBase projectile)
         {
             _projectilePoolFactory.Return(projectile);
-        }
-
-        public void OnTakeDamage(Color colorOfHitter)
-        {
-
         }
 
         protected override void OnDestroy()

@@ -16,11 +16,11 @@ namespace _Project.Code.Gameplay.GameManagement
 
         public override void Initialize()
         {
-            var gameplayState = new GameplayState(this);
+            var gameplayState = new MenuState(this);
             _stateMachine = new FiniteStateMachine<IState>(gameplayState);
 
             _stateMachine.AddState(new PausedState(this));
-            _stateMachine.AddState(new MenuState(this));
+            _stateMachine.AddState(new GameplayState(this));
 
             EventBus.Instance.Subscribe<PauseInputEvent>(this, HandlePauseInput);
         }

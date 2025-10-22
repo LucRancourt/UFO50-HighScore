@@ -94,7 +94,7 @@ namespace _Project.Code.Core.Pool
 
             if (_collectionCheck && _pool.Contains(obj))
             {
-                Debug.LogError("Object is already in pool!");
+                //Debug.LogError("Object is already in pool!");
                 return;
             }
 

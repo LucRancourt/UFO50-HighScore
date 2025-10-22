@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3068003093655700775}
   - component: {fileID: 8620125671478876399}
   - component: {fileID: 4645996639169547398}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: '[char_bullet_enemy]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,5 +175,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3f86bd99f05244d930b05063f71793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: 1
+  projectileType: 4
   defaultSpeed: 10

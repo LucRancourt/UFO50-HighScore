@@ -3,6 +3,8 @@ using UnityEngine;
 using _Project.Code.Core.Pool;
 using System;
 using _Project.Code.Gameplay.PlayerController.Drone;
+using _Project.Code.Core.Events;
+using _Project.Code.Gameplay.GameManagement;
 
 namespace _Project.Code.Gameplay.Projectiles
 {
@@ -38,10 +40,17 @@ namespace _Project.Code.Gameplay.Projectiles
 
                 GetComponent<BoxCollider2D>().isTrigger = true;
 
+                EventBus.Instance?.Subscribe<GameStateChangedEvent>(this, Reset);
+
                 _hasBeenInitialized = true;
             }
 
             _currentSpeed = defaultSpeed;
+        }
+
+        private void Reset(GameStateChangedEvent gameState)
+        {
+            OnHit?.Invoke(this);
         }
 
         public void SetProjectTileType(ProjectileType projType)

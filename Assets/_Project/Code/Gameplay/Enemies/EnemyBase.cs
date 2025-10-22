@@ -48,7 +48,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         _splineAnimate = GetComponent<SplineAnimate>();
         _splineAnimate.Alignment = SplineAnimate.AlignmentMode.None;
         _splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
-        //_splineAnimate.PlayOnAwake = false;
+        _splineAnimate.PlayOnAwake = false;
         _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
         _splineAnimate.Completed += DieWithoutScore;
 
