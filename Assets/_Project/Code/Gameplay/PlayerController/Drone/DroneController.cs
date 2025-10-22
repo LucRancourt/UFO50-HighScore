@@ -30,6 +30,10 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private int _currentHealth;
         private Vector3 _startPos;
 
+        private bool _wasRecentlyHit = false;
+        [SerializeField] private float invincibilityTimer = 3.0f;
+        private float _currentInvicibilityTimer;
+
         public CharacterControllerMotor Motor => _motor;
         public Vector2 MoveInput { get; set; }
 
@@ -61,6 +65,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             _currentShootDelay = shootDelay;
 
             _startPos = transform.position;
+
         }
 
         protected override void Start()
@@ -78,7 +83,9 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         public void OnTakeDamage(Color colorOfHitter)
         {
-            ServiceLocator.Get<GameManagementService>().TransitionToPaused();
+            if (_wasRecentlyHit) return;
+
+            _wasRecentlyHit = true;
 
             _currentHealth--;
 
@@ -101,6 +108,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
                 _spriteRenderer.color = Color.white;
                 _currentHealth = _maxHealth;
                 transform.position = _startPos;
+                _currentInvicibilityTimer = invincibilityTimer;
             }
         }
 
@@ -109,6 +117,15 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             base.Update();
 
             _currentShootDelay -= Time.deltaTime;
+
+            if (_wasRecentlyHit)
+                _currentInvicibilityTimer -= Time.deltaTime;
+
+            if (_currentInvicibilityTimer <= 0.0f)
+            {
+                _currentInvicibilityTimer = invincibilityTimer;
+                _wasRecentlyHit = false;
+            }
         }
 
         public Vector3 GetForwardDirection()
