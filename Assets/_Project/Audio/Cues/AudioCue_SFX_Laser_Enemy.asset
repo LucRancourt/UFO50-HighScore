@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b8d15796896524c991634b0f871de8, type: 3}
+  m_Name: AudioCue_SFX_Laser_Enemy
+  m_EditorClassIdentifier: 
+  <AudioClips>k__BackingField:
+  - {fileID: 8300000, guid: eb5468abcf45e394d904672246147508, type: 3}
+  - {fileID: 8300000, guid: 0184cc92d6dc7544d96f8999a6d48658, type: 3}
+  <Loop>k__BackingField: 0
+  <Volume>k__BackingField: 0.494
+  <Pitch>k__BackingField: 1

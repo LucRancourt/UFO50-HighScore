@@ -12,6 +12,8 @@ using _Project.Code.Core.ServiceLocator;
 using _Project.Code.Core.StateMachine;
 using _Project.Code.Gameplay.GameManagement;
 using _Project.Code.Core.Events;
+using _Project.Code.Utilities.Audio;
+using _Project.Code.Core.Audio;
 
 namespace _Project.Code.Gameplay.PlayerController.Drone
 {
@@ -34,6 +36,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         // Shooter specific properties
         private SpriteRenderer _spriteRenderer;
+        [SerializeField] private AudioCue fireSFX;
         [SerializeField] private ProjectileBase projectilePrefab;
         [SerializeField] private float shootDelay = 0.5f;
         private float _currentShootDelay;
@@ -145,6 +148,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             if (!projectile.HasOnHitBeenAdded)
                 projectile.OnHit += ReturnProjectile;
 
+            AudioManager.Instance.PlaySound(fireSFX);
 
             Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
             s = Mathf.Clamp(s - 0.025f, 0.0f, s);

@@ -6,6 +6,10 @@ using UnityEngine.Splines;
 using _Project.Code.Core.Pool;
 using _Project.Code.Gameplay.Projectiles;
 using _Project.Code.Core.Factory;
+using _Project.Code.Utilities.Audio;
+using _Project.Code.Core.Audio;
+using _Project.Code.Gameplay.GameManagement;
+using _Project.Code.Core.ServiceLocator;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Rigidbody2D))]
 [RequireComponent(typeof(SplineAnimate))]
@@ -17,9 +21,11 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     private Rigidbody2D _rigidbody2D;
     private SplineAnimate _splineAnimate;
 
+    [SerializeField] private AudioCue fireSFX;
     private PooledFactory<ProjectileBase> _projectilePoolFactory;
     [SerializeField] private ProjectileBase projectilePrefab;
     [SerializeField] private ProjectileType projectileType;
+    [SerializeField] private SplineContainer[] splines;
 
     [SerializeField] private float hitpoints = 10.0f;
     private float _currentHitpoints;
@@ -27,7 +33,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     [SerializeField] private int score = 1;
 
     [SerializeField] private float defaultMoveSpeed;
-    [SerializeField] private float defaultFireSpeed;
+    [SerializeField] private float defaultFireDelay;
     private float _fireDelay;
 
     private bool _hasBeenInitialized = false;
@@ -119,7 +125,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
     private void ResetFireDelay()
     {
-        _fireDelay = defaultFireSpeed; // - modifier
+        _fireDelay = defaultFireDelay; // - modifier
     }
 
     private void Update()
@@ -130,12 +136,27 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
             FireProjectile();
     }
 
+    public void ColorSwitch(EColor color)
+    {
+        _spriteRenderer.color = ServiceLocator.Get<GameManagementService>().EColorToColor(color);
+    }
+
+    public void SetSplinePath(bool isLeft)
+    {
+        if (isLeft)
+            _splineAnimate.Container = splines[0];
+        else
+            _splineAnimate.Container = splines[1];
+    }
+
     private void FireProjectile()
     {
         ResetFireDelay();
 
         ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
         projectile.SetDirection();
+
+        AudioManager.Instance.PlaySound(fireSFX);
 
         projectile.ColorSwitch(_spriteRenderer.color);
         if (!projectile.HasOnHitBeenAdded)

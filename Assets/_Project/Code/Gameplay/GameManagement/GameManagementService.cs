@@ -50,5 +50,41 @@ namespace _Project.Code.Gameplay.GameManagement
         {
             EventBus.Instance?.Unsubscribe<PauseInputEvent>(this);
         }
+
+
+
+        public Color EColorToColor(EColor color)
+        {
+            switch (color)
+            {
+                case EColor.White:
+                    return Color.white;
+
+                case EColor.Red:
+                    return Color.red;
+
+                case EColor.Blue:
+                    return Color.blue;
+
+                case EColor.Yellow:
+                    return Color.yellow;
+
+                case EColor.Random:
+                    return EColorToColor((EColor)Random.Range(0, 4));
+
+                default:
+                    return Color.black;
+            }
+        }
+
     }
+}
+
+public enum EColor
+{
+    White,
+    Red,
+    Blue,
+    Yellow,
+    Random
 }

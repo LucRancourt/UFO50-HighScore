@@ -12,7 +12,8 @@ public class EnemyManager : MonoBehaviour
     [Tooltip("Keep them in order!")]
     [SerializeField] private EnemyBase[] allEnemyPrefabs;
     [SerializeField] private float startDelay = 3.0f;
-
+    [SerializeField] private float waveDelay = 3.0f;
+    
     private int _waveIndex;
     private int _activeEnemies = -1;
 
@@ -61,7 +62,7 @@ public class EnemyManager : MonoBehaviour
         // spawn wave
         for (int i = 0; i < waves[_waveIndex].enemyPrefabs.Length; i++)
         {
-            StartCoroutine(SpawnNextEnemy(waves[_waveIndex].enemyPrefabs[i], (waves[_waveIndex].delayBetweenSpawns * i)));
+            StartCoroutine(SpawnNextEnemy(waves[_waveIndex].enemyPrefabs[i], waves[_waveIndex].splineToFollowIsOnLeft[i], waves[_waveIndex].color, (waves[_waveIndex].delayBetweenSpawns * i)));
         }
 
         _activeEnemies = waves[_waveIndex].enemyPrefabs.Length;
@@ -69,7 +70,7 @@ public class EnemyManager : MonoBehaviour
         _waveIndex++;
     }
 
-    private IEnumerator SpawnNextEnemy(int enemyToSpawn, float delay)
+    private IEnumerator SpawnNextEnemy(int enemyToSpawn, bool splineToFollowIsLeft, EColor color, float delay)
     {
         yield return new WaitForSeconds(delay);
 
@@ -79,16 +80,22 @@ public class EnemyManager : MonoBehaviour
         {
             case 1:
                 enemy = _enemyPool[0].Create();
+                enemy.SetSplinePath(splineToFollowIsLeft);
+                enemy.ColorSwitch(color);
                 enemy.OnDestroyed += Enemy1Death;
                 break;
 
             case 2:
                 enemy = _enemyPool[1].Create();
+                enemy.SetSplinePath(splineToFollowIsLeft);
+                enemy.ColorSwitch(color);
                 enemy.OnDestroyed += Enemy2Death;
                 break;
 
             case 3:
                 enemy = _enemyPool[2].Create();
+                enemy.SetSplinePath(splineToFollowIsLeft);
+                enemy.ColorSwitch(color);
                 enemy.OnDestroyed += Enemy3Death;
                 break;
         }
@@ -116,7 +123,10 @@ public class EnemyManager : MonoBehaviour
     private void Update()
     {
         if (_activeEnemies == 0)
-            SpawnNextWave();
+        {
+            Invoke("SpawnNextWave", waveDelay);
+            _activeEnemies = -1;
+        }
     }
 }
 
@@ -124,6 +134,11 @@ public class EnemyManager : MonoBehaviour
 public struct Wave
 {
     [Tooltip("Number is based on the enemy identifier!")]
-    [SerializeField] public int[] enemyPrefabs;
+    [SerializeField, Range(1,3)] public int[] enemyPrefabs;
+    [SerializeField] public bool[] splineToFollowIsOnLeft;
+    [SerializeField] public EColor color;
     [SerializeField] public float delayBetweenSpawns;
 }
+
+
+
