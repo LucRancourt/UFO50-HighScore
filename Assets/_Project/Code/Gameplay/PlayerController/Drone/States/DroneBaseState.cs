@@ -48,6 +48,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
         public override void Exit()
         {
             EventBus.Instance?.Unsubscribe<MoveInputEvent>(this);
+            EventBus.Instance?.Unsubscribe<FireInputEvent>(this);
+            EventBus.Instance?.Unsubscribe<Fire2InputEvent>(this);
         }
     }
 }

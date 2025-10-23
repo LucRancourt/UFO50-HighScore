@@ -206,7 +206,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         public void FireSecondaryProjectile()
         {
-            Debug.Log("FFS");
+            _color = EColor.White;
+            _spriteRenderer.color = ServiceLocator.Get<GameManagementService>().EColorToColor(EColor.White);
         }
 
         private void ReturnProjectile(ProjectileBase projectile)
