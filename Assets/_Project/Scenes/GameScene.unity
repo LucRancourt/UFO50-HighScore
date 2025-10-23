@@ -1407,6 +1407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MovementProfile>k__BackingField: {fileID: 11400000, guid: c3ee8f2363c0e2843bcc05742bbf839d, type: 2}
+  invincibilityTimer: 3
   fireSFX: {fileID: 11400000, guid: 306fee60c2facc145b6206a3024582cf, type: 2}
   projectilePrefab: {fileID: 1477580038013809895, guid: 38068396bd91fa945acaa95adf5414f6, type: 3}
   shootDelay: 0.1
@@ -2196,6 +2197,18 @@ MonoBehaviour:
     splineToFollowIsOnLeft: 00000001
     color: 4
     delayBetweenSpawns: 1
+  - enemyPrefabs: 01000000030000000200000002000000
+    splineToFollowIsOnLeft: 00000001
+    color: 2
+    delayBetweenSpawns: 1
+  - enemyPrefabs: 02000000010000000300000001000000
+    splineToFollowIsOnLeft: 00000001
+    color: 1
+    delayBetweenSpawns: 2
+  - enemyPrefabs: 03000000010000000300000001000000
+    splineToFollowIsOnLeft: 00000001
+    color: 4
+    delayBetweenSpawns: 2
   allEnemyPrefabs:
   - {fileID: 8316994275798110378, guid: f1d741311aa7a8f4da2b61074bd972a8, type: 3}
   - {fileID: 1277995398105125371, guid: 653f461b9e5d4364398450ebbb8736b1, type: 3}

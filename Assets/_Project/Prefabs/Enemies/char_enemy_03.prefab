@@ -178,14 +178,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireSFX: {fileID: 11400000, guid: ae2ff27d45ebcc6478aea9f4a5585a79, type: 2}
   projectilePrefab: {fileID: 4645996639169547398, guid: ed9f840e2469cf049a9516d93dff3e2b, type: 3}
-  projectileType: 4
   splines:
   - {fileID: 7721676560256944778, guid: 1e1d3a295a4272846bfea6f711ed8d54, type: 3}
   - {fileID: 2226702536742793309, guid: c4e2b0effc4cb7c4a9daba501b260095, type: 3}
+  projectileType: 4
   hitpoints: 10
-  hpLossOnHit: 1
-  score: 100
-  defaultMoveSpeed: 2
+  score: 75
+  defaultBulletSpeed: 3.5
+  defaultMoveSpeed: 1.5
   defaultFireDelay: 0.2
 --- !u!114 &5593666792343653033
 MonoBehaviour:
