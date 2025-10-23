@@ -40,6 +40,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         // Shooter specific properties
         [SerializeField] private GameObject[] hearts;
+        [SerializeField] private GameObject MainMenu;
         private SpriteRenderer _spriteRenderer;
         [SerializeField] private AudioCue fireSFX;
         [SerializeField] private ProjectileBase projectilePrefab;
