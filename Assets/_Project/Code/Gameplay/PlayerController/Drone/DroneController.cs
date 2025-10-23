@@ -26,7 +26,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private CharacterControllerMotor _motor;
         private PlayerService _playerService;
 
-        private int _maxHealth = 3;
+        private int _maxHealth = 4;
         private int _currentHealth;
         private Vector3 _startPos;
 
@@ -39,6 +39,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
 
         // Shooter specific properties
+        [SerializeField] private GameObject[] hearts;
         private SpriteRenderer _spriteRenderer;
         [SerializeField] private AudioCue fireSFX;
         [SerializeField] private ProjectileBase projectilePrefab;
@@ -95,6 +96,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
             if (_currentHealth <= 0)
                 ServiceLocator.Get<GameManagementService>().TransitionToMenu();
+            else
+                hearts[_currentHealth-1].SetActive(false);
         }
 
         public override void Initialize()
@@ -115,6 +118,11 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
                 _currentHealth = _maxHealth;
                 transform.position = _startPos;
                 _currentInvicibilityTimer = invincibilityTimer;
+
+                foreach (GameObject heart in hearts)
+                {
+                    heart.SetActive(true);
+                }
             }
         }
 
@@ -193,6 +201,11 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             }
 
             AudioManager.Instance.PlaySound(fireSFX);
+        }
+
+        public void FireSecondaryProjectile()
+        {
+            Debug.Log("FFS");
         }
 
         private void ReturnProjectile(ProjectileBase projectile)

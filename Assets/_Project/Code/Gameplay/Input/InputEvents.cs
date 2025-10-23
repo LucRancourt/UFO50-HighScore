@@ -15,5 +15,7 @@ namespace _Project.Code.Gameplay.Input
         public bool isFiring;
     }
 
+    public struct Fire2InputEvent : IEvent { }
+
     public struct PauseInputEvent : IEvent { }
 }

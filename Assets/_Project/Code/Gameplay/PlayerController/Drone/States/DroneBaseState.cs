@@ -22,6 +22,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
         {
             EventBus.Instance?.Subscribe<MoveInputEvent>(this, HandleMove);
             EventBus.Instance?.Subscribe<FireInputEvent>(this, HandleFire);
+            EventBus.Instance?.Subscribe<Fire2InputEvent>(this, HandleFire2);
         }
 
         protected virtual void HandleMove(MoveInputEvent evt)
@@ -32,6 +33,10 @@ namespace _Project.Code.Gameplay.PlayerController.Drone.States
         private void HandleFire(FireInputEvent evt)
         {
             _isFiring = evt.isFiring;
+        }
+        private void HandleFire2(Fire2InputEvent evt)
+        {
+            _controller.FireSecondaryProjectile();
         }
 
         public override void Update()
