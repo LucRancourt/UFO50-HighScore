@@ -14,6 +14,5 @@ public class ScoreManager : Singleton<ScoreManager>
     public void AddScore(int score)
     {
         _currentScore += score;
-        Debug.Log(_currentScore);
     }
 }

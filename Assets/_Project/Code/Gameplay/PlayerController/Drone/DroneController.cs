@@ -46,6 +46,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private float _currentShootDelay;
         private PooledFactory<ProjectileBase> _projectilePoolFactory;
 
+        private EColor _color;
+
 
         // Drone specific properties
         public float ForwardInput => MoveInput.y;
@@ -107,7 +109,9 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         {
             if (gameState.StateName == "Gameplay")
             {
-                _spriteRenderer.color = Color.white;
+                _color = EColor.White;
+                _spriteRenderer.color = ServiceLocator.Get<GameManagementService>().EColorToColor(_color);
+
                 _currentHealth = _maxHealth;
                 transform.position = _startPos;
                 _currentInvicibilityTimer = invincibilityTimer;
@@ -128,6 +132,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             if (_currentInvicibilityTimer <= 0.0f)
             {
                 CancelInvoke();
+                _spriteRenderer.enabled = true;
                 _currentInvicibilityTimer = invincibilityTimer;
                 _wasRecentlyHit = false;
             }
@@ -182,35 +187,42 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             projectile.SetDirection();
             projectile.ColorSwitch(_spriteRenderer.color);
             if (!projectile.HasOnHitBeenAdded)
-                projectile.OnHitForPlayer += ReturnProjectile;
+            {
+                projectile.OnHitForPlayer += ReturnProjectileThatHitEnemy;
+                projectile.OnHit += ReturnProjectile;
+            }
 
             AudioManager.Instance.PlaySound(fireSFX);
         }
 
-        private void ReturnProjectile(ProjectileBase projectile, Color color)
+        private void ReturnProjectile(ProjectileBase projectile)
         {
             _projectilePoolFactory.Return(projectile);
+        }
 
+        private void ReturnProjectileThatHitEnemy(ProjectileBase projectile, EColor color)
+        {
+            ReturnProjectile(projectile);
 
-            Color.RGBToHSV(color, out float hitH, out float hitS, out float hitV);
-
-            if (hitS == 0.0f) return;
+            if (color == EColor.White) return;
 
             Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
 
-            if (s == 0.0f || h == hitH)
+            if (s == 0.0f || color == _color)
             {
-                s = Mathf.Clamp(s + 0.025f, s, 1.0f);
-                _spriteRenderer.color = Color.HSVToRGB(hitH, s, v);
+                _color = color;
+
+                Color.RGBToHSV(ServiceLocator.Get<GameManagementService>().EColorToColor(color), out float newH, out float garbageS, out float garbageV);
+
+                s = Mathf.Clamp(s + 0.05f, 0.0f, 1.0f);
+
+                if (s > 0.9f)
+                    s = 1.0f;
+                else if (s < 0.15f)
+                    s = 0.15f;
+
+                _spriteRenderer.color = Color.HSVToRGB(newH, s, v);
             }
-
-            return;
-            s = Mathf.Clamp(s - 0.025f, 0.0f, s);
-
-            if (s < 0.1f)
-                s = 0.0f;
-
-            _spriteRenderer.color = Color.HSVToRGB(h, s, v);
         }
 
         protected override void OnDestroy()

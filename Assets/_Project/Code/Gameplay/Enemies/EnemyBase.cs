@@ -42,6 +42,8 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     [SerializeField] private float defaultFireDelay;
     private float _fireDelay;
 
+    public EColor SpriteColor { get; private set; }
+
     private bool _hasBeenInitialized = false;
 
 
@@ -53,6 +55,8 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     private void Initialize()
     {
         if (_hasBeenInitialized) return;
+
+        SpriteColor = EColor.White;
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -93,7 +97,6 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         if (_currentHitpoints <= 0.0f)
             Die();
     }
-
 
     public void Die()
     {
@@ -159,6 +162,21 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     public void ColorSwitch(EColor color)
     {
         _spriteRenderer.color = ServiceLocator.Get<GameManagementService>().EColorToColor(color);
+
+        Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
+
+        if (s == 0.0f)
+        { 
+            SpriteColor = EColor.White;
+            return;
+        }
+
+        if (h <= 0.1f)
+            SpriteColor = EColor.Red;
+        else if (h <= 0.17f)
+            SpriteColor = EColor.Yellow;
+        else
+            SpriteColor = EColor.Blue;
     }
 
     public void SetSplinePath(bool isLeft)
