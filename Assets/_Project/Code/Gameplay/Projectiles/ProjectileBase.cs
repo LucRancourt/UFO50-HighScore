@@ -13,6 +13,8 @@ namespace _Project.Code.Gameplay.Projectiles
     {
         public event Action<ProjectileBase> OnHit;
 
+        public event Action<ProjectileBase, Color> OnHitForPlayer;
+
         [SerializeField] private ProjectileType projectileType;
         private Vector3 _direction;
 
@@ -113,6 +115,8 @@ namespace _Project.Code.Gameplay.Projectiles
             if (collision.TryGetComponent(out IDamageable damaged))
             {
                 damaged.OnTakeDamage(_spriteRenderer.color);
+
+                OnHitForPlayer?.Invoke(this, collision.GetComponent<SpriteRenderer>().color);
             }
 
             OnHit?.Invoke(this);

@@ -58,16 +58,16 @@ namespace _Project.Code.Gameplay.GameManagement
             switch (color)
             {
                 case EColor.White:
-                    return Color.white;
+                    return Color.HSVToRGB(0.0f, 0.0f, 1.0f);
 
                 case EColor.Red:
-                    return Color.red;
+                    return Color.HSVToRGB(0.0f, 1.0f, 1.0f);
 
                 case EColor.Blue:
-                    return Color.blue;
+                    return Color.HSVToRGB(0.55f, 1.0f, 1.0f);
 
                 case EColor.Yellow:
-                    return Color.yellow;
+                    return Color.HSVToRGB(0.166f, 1.0f, 1.0f);
 
                 case EColor.Random:
                     return EColorToColor((EColor)Random.Range(0, 4));

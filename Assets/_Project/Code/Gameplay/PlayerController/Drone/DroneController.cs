@@ -182,22 +182,35 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             projectile.SetDirection();
             projectile.ColorSwitch(_spriteRenderer.color);
             if (!projectile.HasOnHitBeenAdded)
-                projectile.OnHit += ReturnProjectile;
+                projectile.OnHitForPlayer += ReturnProjectile;
 
             AudioManager.Instance.PlaySound(fireSFX);
+        }
+
+        private void ReturnProjectile(ProjectileBase projectile, Color color)
+        {
+            _projectilePoolFactory.Return(projectile);
+
+
+            Color.RGBToHSV(color, out float hitH, out float hitS, out float hitV);
+
+            if (hitS == 0.0f) return;
 
             Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
+
+            if (s == 0.0f || h == hitH)
+            {
+                s = Mathf.Clamp(s + 0.025f, s, 1.0f);
+                _spriteRenderer.color = Color.HSVToRGB(hitH, s, v);
+            }
+
+            return;
             s = Mathf.Clamp(s - 0.025f, 0.0f, s);
 
             if (s < 0.1f)
                 s = 0.0f;
 
             _spriteRenderer.color = Color.HSVToRGB(h, s, v);
-        }
-
-        private void ReturnProjectile(ProjectileBase projectile)
-        {
-            _projectilePoolFactory.Return(projectile);
         }
 
         protected override void OnDestroy()
