@@ -100,8 +100,6 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
     public void Die()
     {
-        // Score Manager add score
-
         ScoreManager.Instance.AddScore(score);
         OnDestroyed?.Invoke(this);
     }

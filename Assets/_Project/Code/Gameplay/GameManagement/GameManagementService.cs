@@ -77,6 +77,26 @@ namespace _Project.Code.Gameplay.GameManagement
             }
         }
 
+        public Color EBossColorToColor(EBossColor color)
+        {
+            switch (color)
+            {
+                case EBossColor.Green:
+                    return Color.HSVToRGB(0.36f, 1.0f, 1.0f);
+
+                case EBossColor.Purple:
+                    return Color.HSVToRGB(0.83f, 1.0f, 1.0f);
+
+                case EBossColor.Orange:
+                    return Color.HSVToRGB(0.097f, 1.0f, 1.0f);
+
+                case EBossColor.Random:
+                    return EBossColorToColor((EBossColor)Random.Range(0, 3));
+
+                default:
+                    return Color.black;
+            }
+        }
     }
 }
 
@@ -86,5 +106,13 @@ public enum EColor
     Red,
     Blue,
     Yellow,
+    Random
+}
+
+public enum EBossColor
+{
+    Green,
+    Purple,
+    Orange,
     Random
 }

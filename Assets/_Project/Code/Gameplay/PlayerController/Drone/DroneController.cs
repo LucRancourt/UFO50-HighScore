@@ -40,13 +40,18 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         // Shooter specific properties
         [SerializeField] private GameObject[] hearts;
-        [SerializeField] private GameObject MainMenu;
         private SpriteRenderer _spriteRenderer;
         [SerializeField] private AudioCue fireSFX;
         [SerializeField] private ProjectileBase projectilePrefab;
+        [SerializeField] private ProjectileBase colorBombPrefab;
         [SerializeField] private float shootDelay = 0.5f;
         private float _currentShootDelay;
         private PooledFactory<ProjectileBase> _projectilePoolFactory;
+        private PooledFactory<ProjectileBase> _colorBombPoolFactory;
+
+        private ParticleSystem _chargePFX;
+        private bool _hasFiredHalfCharge;
+        private bool _hasFiredFullCharge;
 
         private EColor _color;
 
@@ -66,6 +71,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             _motor = GetComponent<CharacterControllerMotor>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
+            _chargePFX = GetComponent<ParticleSystem>();
+
             _currentShootDelay = shootDelay;
 
             _startPos = transform.position;
@@ -77,6 +84,7 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             base.Start();
 
             _projectilePoolFactory = new PooledFactory<ProjectileBase>(projectilePrefab);
+            _colorBombPoolFactory = new PooledFactory<ProjectileBase>(colorBombPrefab);
 
             _playerService = ServiceLocator.Get<PlayerService>();
             _playerService.RegisterPlayer(this);
@@ -124,12 +132,46 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
                 {
                     heart.SetActive(true);
                 }
+
+                _chargePFX.Stop();
+
+                _hasFiredHalfCharge = false;
+                _hasFiredFullCharge = false;
             }
         }
 
         protected override void Update()
         {
             base.Update();
+
+            Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
+
+            if (s >= 0.5f && !_hasFiredHalfCharge)
+            {
+                var pfx = _chargePFX.main;
+                pfx.startColor = ServiceLocator.Get<GameManagementService>().EColorToColor(_color);
+                pfx.startSpeed = 3.5f;
+                pfx.startSize = 1.0f;
+
+                var emission = _chargePFX.emission;
+                emission.rateOverTime = 25.0f;
+
+                _chargePFX.Play();
+                _hasFiredHalfCharge = true;
+            }
+            else if (s == 1.0f && !_hasFiredFullCharge)
+            {
+                var pfx = _chargePFX.main;
+                pfx.startColor = ServiceLocator.Get<GameManagementService>().EColorToColor(_color);
+                pfx.startSpeed = 5.0f;
+                pfx.startSize = 2.0f;
+
+                var emission = _chargePFX.emission;
+                emission.rateOverTime = 50.0f;
+
+                _chargePFX.Play();
+                _hasFiredFullCharge = true;
+            }
 
             _currentShootDelay -= Time.deltaTime;
 
@@ -206,6 +248,23 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
         public void FireSecondaryProjectile()
         {
+            Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
+
+            if (s >= 0.5f)
+            {
+                ProjectileBase projectile = _colorBombPoolFactory.Create(transform.position, transform.rotation);
+                projectile.SetDirection();
+                projectile.ColorSwitch(_spriteRenderer.color);
+                if (!projectile.HasOnHitBeenAdded)
+                    projectile.OnHit += ReturnColorBomb;
+
+                AudioManager.Instance.PlaySound(fireSFX);
+
+                _chargePFX.Stop();
+                _hasFiredHalfCharge = false;
+                _hasFiredFullCharge = false;
+            }
+
             _color = EColor.White;
             _spriteRenderer.color = ServiceLocator.Get<GameManagementService>().EColorToColor(EColor.White);
         }
@@ -213,6 +272,10 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
         private void ReturnProjectile(ProjectileBase projectile)
         {
             _projectilePoolFactory.Return(projectile);
+        }
+        private void ReturnColorBomb(ProjectileBase projectile)
+        {
+            _colorBombPoolFactory.Return(projectile);
         }
 
         private void ReturnProjectileThatHitEnemy(ProjectileBase projectile, EColor color)

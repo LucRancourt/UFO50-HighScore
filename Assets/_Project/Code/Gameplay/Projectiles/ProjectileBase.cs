@@ -19,17 +19,17 @@ namespace _Project.Code.Gameplay.Projectiles
         private Vector3 _direction;
 
         [SerializeField] private float defaultSpeed = 10.0f;
-        private float _currentSpeed;
+        protected float _currentSpeed;
 
         private Rigidbody2D _rigidbody2D;
-        private SpriteRenderer _spriteRenderer;
+        protected SpriteRenderer _spriteRenderer;
 
         private bool _hasBeenInitialized = false;
         public bool HasOnHitBeenAdded { get; private set; } = false;
 
         private DroneController _player;
 
-        private void Initialize()
+        protected virtual void Initialize()
         {
             if (!_hasBeenInitialized)
             {
@@ -110,7 +110,7 @@ namespace _Project.Code.Gameplay.Projectiles
             _currentSpeed = speed;
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        protected virtual void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out IDamageable damaged))
             {
@@ -121,9 +121,15 @@ namespace _Project.Code.Gameplay.Projectiles
                     OnHitForPlayer?.Invoke(this, enemy.SpriteColor);
                 }
             }
-
+            
             OnHit?.Invoke(this);
         }
+
+        protected void CallOnHit()
+        {
+            OnHit?.Invoke(this);
+        }
+
 
         public void OnReturnToPool()
         {
