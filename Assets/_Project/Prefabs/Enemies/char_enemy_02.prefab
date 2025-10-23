@@ -185,7 +185,7 @@ MonoBehaviour:
   hitpoints: 10
   score: 50
   defaultBulletSpeed: 2.5
-  defaultMoveSpeed: 1
+  defaultMoveSpeed: 1.75
   defaultFireDelay: 0.3
 --- !u!114 &5801245093005700224
 MonoBehaviour:

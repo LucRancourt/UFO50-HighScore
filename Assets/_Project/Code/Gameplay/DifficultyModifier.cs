@@ -1,12 +1,14 @@
 using _Project.Code.Core.General;
+using UnityEngine;
 
 public class DifficultyModifier : Singleton<DifficultyModifier>
 {
     public float DifficultyModifierAmount { get; private set; }
+    [SerializeField] private float incrementAmount = 0.75f;
 
     public void IncreaseDifficulty()
     {
-        DifficultyModifierAmount += 0.5f;
+        DifficultyModifierAmount += incrementAmount;
     }
 
     public void ResetDifficulty()

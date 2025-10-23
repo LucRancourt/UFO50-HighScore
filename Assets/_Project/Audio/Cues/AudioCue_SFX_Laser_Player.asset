@@ -16,5 +16,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3fb2a9b29f07fa448837d31c0c3dc7cf, type: 3}
   - {fileID: 8300000, guid: 53abc0a3526bc6f448720ad203eb317d, type: 3}
   <Loop>k__BackingField: 0
-  <Volume>k__BackingField: 1
+  <Volume>k__BackingField: 0.503
   <Pitch>k__BackingField: 1
