@@ -95,7 +95,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     }
 
 
-    private void Die()
+    public void Die()
     {
         // Score Manager add score
 

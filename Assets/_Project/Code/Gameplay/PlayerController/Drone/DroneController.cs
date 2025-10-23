@@ -87,6 +87,8 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
 
             _wasRecentlyHit = true;
 
+            InvokeRepeating("AnimateIFrames", 0.2f, 0.2f);
+
             _currentHealth--;
 
             if (_currentHealth <= 0)
@@ -119,13 +121,30 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             _currentShootDelay -= Time.deltaTime;
 
             if (_wasRecentlyHit)
+            {
                 _currentInvicibilityTimer -= Time.deltaTime;
+            }
 
             if (_currentInvicibilityTimer <= 0.0f)
             {
+                CancelInvoke();
                 _currentInvicibilityTimer = invincibilityTimer;
                 _wasRecentlyHit = false;
             }
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.TryGetComponent(out EnemyBase enemy))
+            {
+                enemy.Die();
+                OnTakeDamage(Color.white);
+            }
+        }
+
+        private void AnimateIFrames()
+        {
+            _spriteRenderer.enabled = !_spriteRenderer.enabled;
         }
 
         public Vector3 GetForwardDirection()

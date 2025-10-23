@@ -10,4 +10,8 @@ namespace _Project.Code.Gameplay.GameManagement
     public struct GamePausedEvent : IEvent { }
 
     public struct GameResumedEvent : IEvent { }
+
+
+
+    public struct GameWaveCleared : IEvent { }
 }

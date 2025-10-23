@@ -16,7 +16,7 @@ namespace _Project.Code.Gameplay.PlayerController._Base
 
         public void Move(Vector2 direction, float speed)
         {
-            Vector2 moveVector = direction.normalized * speed * Time.deltaTime;
+            Vector2 moveVector = direction.normalized * speed * Time.fixedDeltaTime;
 
             moveVector += _rigidbody2D.position;
 

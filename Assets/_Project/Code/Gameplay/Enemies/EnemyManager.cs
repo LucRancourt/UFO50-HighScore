@@ -30,8 +30,6 @@ public class EnemyManager : MonoBehaviour
 
     public void Reset(GameStateChangedEvent state)
     {
-        if (state.StateName != "Gameplay") return;
-
         _activeEnemies = -1;
 
         foreach (PooledFactory<EnemyBase> pool in _enemyPool)
@@ -41,12 +39,17 @@ public class EnemyManager : MonoBehaviour
 
         _enemyPool.Clear();
 
+        _waveIndex = 0;
+
+        CancelInvoke();
+        StopAllCoroutines();
+
+        if (state.StateName != "Gameplay") return;
+
         foreach (EnemyBase enemy in allEnemyPrefabs)
         {
             _enemyPool.Add(new PooledFactory<EnemyBase>(enemy));
         }
-
-        _waveIndex = 0;
 
         Invoke("SpawnNextWave", startDelay);
     }
@@ -55,8 +58,8 @@ public class EnemyManager : MonoBehaviour
     {
         if (_waveIndex >= waves.Length)
         {
-            _waveIndex = 0;
-            // increase difficulty
+            EventBus.Instance.Publish(new GameWaveCleared());
+            return;
         }
 
         // spawn wave
