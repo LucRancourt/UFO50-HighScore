@@ -5,6 +5,7 @@ namespace _Project.Code.Gameplay.Projectiles
     public class ColorBomb : ProjectileBase
     {
         private GameObject _explosion;
+        public bool WasFullCharged;
 
         private void Awake()
         {
@@ -16,23 +17,26 @@ namespace _Project.Code.Gameplay.Projectiles
         {
             base.Initialize();
 
+            WasFullCharged = false;
             _explosion.SetActive(false);
         }
 
         protected override void OnTriggerEnter2D(Collider2D collision)
         {
-
-            if (collision.TryGetComponent(out EnemyBase originalHit))
-            {
-                _explosion.GetComponent<SpriteRenderer>().color = _spriteRenderer.color;
-                _explosion.SetActive(true);
-                _currentSpeed = 0.0f;
-                originalHit.Die();
-            }
-            else
+            if (collision.gameObject.layer == LayerMask.NameToLayer("OutOfBounds"))
             {
                 CallOnHit();
                 return;
+            }
+
+            _explosion.GetComponent<SpriteRenderer>().color = _spriteRenderer.color;
+            _explosion.SetActive(true);
+            Invoke("HideExplosion", 0.5f);
+            _currentSpeed = 0.0f;
+
+            if (collision.TryGetComponent(out EnemyBase originalHit))
+            {
+                originalHit.Die();
             }
 
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.0f);
@@ -50,13 +54,12 @@ namespace _Project.Code.Gameplay.Projectiles
                     }
                 }
             }
-
-            Invoke("HideExplosion", 0.5f);
         }
 
         private void HideExplosion()
         {
             _explosion.SetActive(false);
+            WasFullCharged = false;
             CallOnHit();
         }
     }

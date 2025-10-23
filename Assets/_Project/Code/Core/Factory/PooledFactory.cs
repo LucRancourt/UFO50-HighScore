@@ -33,6 +33,11 @@ namespace _Project.Code.Core.Factory
             _pool.Release(obj);
         }
 
+        public void ReturnAll()
+        {
+            _pool.ReleaseAll();
+        }
+
         public void Clear()
         {
             _pool.Clear();

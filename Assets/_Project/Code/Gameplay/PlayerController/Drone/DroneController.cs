@@ -253,6 +253,13 @@ namespace _Project.Code.Gameplay.PlayerController.Drone
             if (s >= 0.5f)
             {
                 ProjectileBase projectile = _colorBombPoolFactory.Create(transform.position, transform.rotation);
+
+                if (projectile.TryGetComponent(out ColorBomb bomb))
+                {
+                    if (s == 1.0f)
+                        bomb.WasFullCharged = true;
+                }
+
                 projectile.SetDirection();
                 projectile.ColorSwitch(_spriteRenderer.color);
                 if (!projectile.HasOnHitBeenAdded)

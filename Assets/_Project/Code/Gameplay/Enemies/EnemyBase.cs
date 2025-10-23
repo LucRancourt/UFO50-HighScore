@@ -27,6 +27,9 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     [SerializeField] private ProjectileBase projectilePrefab;
     [SerializeField] private SplineContainer[] splines;
 
+    private Vector3 _normalScale;
+    private Vector3 _flippedScale;
+
     [Header("Projectile Type")]
     [SerializeField] private ProjectileType projectileType;
 
@@ -55,6 +58,10 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     private void Initialize()
     {
         if (_hasBeenInitialized) return;
+
+        _normalScale = transform.localScale;
+        _flippedScale = _normalScale;
+        _flippedScale.x = -_flippedScale.x;
 
         SpriteColor = EColor.White;
 
@@ -109,17 +116,24 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         OnDestroyed?.Invoke(this);
     }
 
-    public void FlipDirectionForEnemy02()
+    public void FlipDirectionForEnemy02(bool isOnLeft)
     {
-        projectileType = ProjectileType.Right;
+        if (isOnLeft)
+            projectileType = ProjectileType.Right;
+        else
+            projectileType = ProjectileType.Left;
     }
 
-    public void FlipSprite()
+    public void FlipSprite(bool isLeft)
     {
-        Vector3 newScale = transform.localScale;
-        newScale.x = -newScale.x;
-        transform.localScale = newScale;
-
+        if (isLeft)
+        {
+            transform.localScale = _flippedScale;
+        }
+        else
+        {
+            transform.localScale = _normalScale;
+        }    
     }
 
     public void OnSpawnFromPool()
@@ -133,7 +147,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
 
         ResetFireDelay();
-        _splineAnimate.MaxSpeed = defaultMoveSpeed;  // + or * multiplier (probs +)
+        _splineAnimate.MaxSpeed = defaultMoveSpeed * DifficultyModifier.Instance.DifficultyModifierAmount; 
 
         _currentHitpoints = hitpoints;
 
@@ -142,6 +156,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
     public void OnReturnToPool()
     {
+        _splineAnimate.Pause();
     }
 
     private void ResetFireDelay()

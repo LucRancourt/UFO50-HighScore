@@ -120,6 +120,14 @@ namespace _Project.Code.Core.Pool
             }
         }
 
+        public void ReleaseAll()
+        {
+            foreach (var obj in _pool)
+            {
+                Release(obj);
+            }
+        }
+
         public void Clear()
         {
             foreach (var obj in _pool)

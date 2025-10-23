@@ -8,12 +8,15 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private Wave[] waves;
+    [SerializeField] private Wave[] bossWaves;
     private List<PooledFactory<EnemyBase>> _enemyPool = new List<PooledFactory<EnemyBase>>();
     [Tooltip("Keep them in order!")]
     [SerializeField] private EnemyBase[] allEnemyPrefabs;
     [SerializeField] private float startDelay = 3.0f;
     [SerializeField] private float waveDelay = 3.0f;
-    
+    [SerializeField] private Boss boss;
+    private bool _isBossActive = false;
+
     private int _waveIndex;
     private int _activeEnemies = -1;
 
@@ -30,6 +33,8 @@ public class EnemyManager : MonoBehaviour
 
     public void Reset(GameStateChangedEvent state)
     {
+        DifficultyModifier.Instance.ResetDifficulty();
+
         _activeEnemies = -1;
 
         foreach (PooledFactory<EnemyBase> pool in _enemyPool)
@@ -40,6 +45,9 @@ public class EnemyManager : MonoBehaviour
         _enemyPool.Clear();
 
         _waveIndex = 0;
+
+        _isBossActive = false;
+        boss.gameObject.SetActive(false);
 
         CancelInvoke();
         StopAllCoroutines();
@@ -58,7 +66,13 @@ public class EnemyManager : MonoBehaviour
     {
         if (_waveIndex >= waves.Length)
         {
-            EventBus.Instance.Publish(new GameWaveCleared());
+            boss.gameObject.SetActive(true);
+            boss.Reset();
+            _isBossActive = true;
+
+
+            _waveIndex = 0;
+            SpawnNextBossWave();
             return;
         }
 
@@ -71,6 +85,43 @@ public class EnemyManager : MonoBehaviour
         _activeEnemies = waves[_waveIndex].enemyPrefabs.Length;
 
         _waveIndex++;
+    }
+
+    private void SpawnNextBossWave()
+    {
+        if (_waveIndex >= bossWaves.Length)
+        {
+            _waveIndex = 0;
+        }
+
+
+        for (int i = 0; i < bossWaves[_waveIndex].enemyPrefabs.Length; i++)
+        {
+            StartCoroutine(SpawnNextEnemy(bossWaves[_waveIndex].enemyPrefabs[i], bossWaves[_waveIndex].splineToFollowIsOnLeft[i], bossWaves[_waveIndex].color, (bossWaves[_waveIndex].delayBetweenSpawns * i)));
+        }
+
+        _activeEnemies = bossWaves[_waveIndex].enemyPrefabs.Length;
+
+        _waveIndex++;
+    }
+
+    public void BossDefeated()
+    {
+        boss.gameObject.SetActive(false);
+        _waveIndex = 0;
+
+        _isBossActive = false;
+
+        foreach (PooledFactory<EnemyBase> pool in _enemyPool)
+        {
+            pool.ReturnAll();
+        }
+
+        DifficultyModifier.Instance.IncreaseDifficulty();
+
+        StopAllCoroutines();
+        CancelInvoke();
+        Invoke("SpawnNextWave", startDelay);
     }
 
     private IEnumerator SpawnNextEnemy(int enemyToSpawn, bool splineToFollowIsLeft, EColor color, float delay)
@@ -94,8 +145,7 @@ public class EnemyManager : MonoBehaviour
                 enemy.ColorSwitch(color);
                 enemy.OnDestroyed += Enemy2Death;
 
-                if (splineToFollowIsLeft)
-                    enemy.FlipDirectionForEnemy02();
+                enemy.FlipDirectionForEnemy02(splineToFollowIsLeft);
                 break;
 
             case 3:
@@ -113,8 +163,7 @@ public class EnemyManager : MonoBehaviour
                 break;
         }
 
-        if (splineToFollowIsLeft)
-            enemy.FlipSprite();
+        enemy.FlipSprite(splineToFollowIsLeft);
     }
 
     private void Enemy1Death(EnemyBase enemyToReturn)
@@ -140,8 +189,19 @@ public class EnemyManager : MonoBehaviour
     {
         if (_activeEnemies == 0)
         {
-            Invoke("SpawnNextWave", waveDelay);
-            _activeEnemies = -1;
+            StopAllCoroutines();
+            CancelInvoke();
+
+            if (_isBossActive)
+            {
+                Invoke("SpawnNextBossWave", waveDelay);
+                _activeEnemies = -1;
+            }   
+            else
+            {
+                Invoke("SpawnNextWave", waveDelay);
+                _activeEnemies = -1;
+            }
         }
     }
 }

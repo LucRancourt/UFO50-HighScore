@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.3263075, y: -0.6273145, z: 0.62731457, w: 0.32630742}
   m_LocalPosition: {x: 3.0135987, y: 6.744961, z: 0}
-  m_LocalScale: {x: 0.107947975, y: 0.107947975, z: 0.107947975}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -186,7 +186,7 @@ MonoBehaviour:
   score: 50
   defaultBulletSpeed: 2.5
   defaultMoveSpeed: 1
-  defaultFireDelay: 0.2
+  defaultFireDelay: 0.3
 --- !u!114 &5801245093005700224
 MonoBehaviour:
   m_ObjectHideFlags: 0
