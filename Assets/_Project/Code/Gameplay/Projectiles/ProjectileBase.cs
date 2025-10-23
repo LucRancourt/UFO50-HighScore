@@ -103,6 +103,11 @@ namespace _Project.Code.Gameplay.Projectiles
             _spriteRenderer.color = color;
         }
 
+        public void SetSpeed(float speed)
+        {
+            _currentSpeed = speed;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out IDamageable damaged))

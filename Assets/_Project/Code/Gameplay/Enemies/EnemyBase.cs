@@ -21,17 +21,23 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     private Rigidbody2D _rigidbody2D;
     private SplineAnimate _splineAnimate;
 
+    [Header("Not to Change")]
     [SerializeField] private AudioCue fireSFX;
     private PooledFactory<ProjectileBase> _projectilePoolFactory;
     [SerializeField] private ProjectileBase projectilePrefab;
-    [SerializeField] private ProjectileType projectileType;
     [SerializeField] private SplineContainer[] splines;
 
+    [Header("Projectile Type")]
+    [SerializeField] private ProjectileType projectileType;
+
+    [Header("HP/Score Stats")]
     [SerializeField] private float hitpoints = 10.0f;
     private float _currentHitpoints;
-    [SerializeField] private float hpLossOnHit = 1.0f;
+    private float hpLossOnHit = 1.0f;
     [SerializeField] private int score = 1;
 
+    [Header("Default Stats")]
+    [SerializeField] private float defaultBulletSpeed;
     [SerializeField] private float defaultMoveSpeed;
     [SerializeField] private float defaultFireDelay;
     private float _fireDelay;
@@ -111,6 +117,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
         _splineAnimate.Restart(false);
 
+
         ResetFireDelay();
         _splineAnimate.MaxSpeed = defaultMoveSpeed;  // + or * multiplier (probs +)
 
@@ -155,6 +162,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
         ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
         projectile.SetDirection();
+        projectile.SetSpeed(defaultBulletSpeed);
 
         AudioManager.Instance.PlaySound(fireSFX);
 
