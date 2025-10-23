@@ -93,6 +93,9 @@ public class EnemyManager : MonoBehaviour
                 enemy.SetSplinePath(splineToFollowIsLeft);
                 enemy.ColorSwitch(color);
                 enemy.OnDestroyed += Enemy2Death;
+
+                if (splineToFollowIsLeft)
+                    enemy.FlipDirectionForEnemy02();
                 break;
 
             case 3:

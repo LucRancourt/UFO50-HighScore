@@ -54,7 +54,9 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     {
         if (_hasBeenInitialized) return;
 
-        projectilePrefab.SetProjectTileType(projectileType);
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        projectilePrefab.SetProjectileType(projectileType);
         _projectilePoolFactory = new PooledFactory<ProjectileBase>(projectilePrefab);
 
         _splineAnimate = GetComponent<SplineAnimate>();
@@ -63,8 +65,6 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         _splineAnimate.PlayOnAwake = false;
         _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
         _splineAnimate.Completed += DieWithoutScore;
-
-        _spriteRenderer = GetComponent<SpriteRenderer>();
 
         transform.rotation = Quaternion.Euler(Vector3.zero);
 
@@ -106,6 +106,12 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
     private void DieWithoutScore()
     {
         OnDestroyed?.Invoke(this);
+    }
+
+    public void FlipDirectionForEnemy02()
+    {
+        Debug.Log("Y");
+        projectileType = ProjectileType.Right;
     }
 
     public void OnSpawnFromPool()
@@ -161,6 +167,7 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
         ResetFireDelay();
 
         ProjectileBase projectile = _projectilePoolFactory.Create(transform.position, transform.rotation);
+        projectile.SetProjectileType(projectileType);
         projectile.SetDirection();
         projectile.SetSpeed(defaultBulletSpeed);
 

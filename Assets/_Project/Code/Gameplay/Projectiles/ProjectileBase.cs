@@ -53,7 +53,7 @@ namespace _Project.Code.Gameplay.Projectiles
             OnHit?.Invoke(this);
         }
 
-        public void SetProjectTileType(ProjectileType projType)
+        public void SetProjectileType(ProjectileType projType)
         {
             projectileType = projType;
         }
