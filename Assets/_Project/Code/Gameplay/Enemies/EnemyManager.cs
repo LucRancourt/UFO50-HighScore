@@ -104,7 +104,17 @@ public class EnemyManager : MonoBehaviour
                 enemy.ColorSwitch(color);
                 enemy.OnDestroyed += Enemy3Death;
                 break;
+
+            default:
+                enemy = _enemyPool[0].Create();
+                enemy.SetSplinePath(splineToFollowIsLeft);
+                enemy.ColorSwitch(color);
+                enemy.OnDestroyed += Enemy1Death;
+                break;
         }
+
+        if (splineToFollowIsLeft)
+            enemy.FlipSprite();
     }
 
     private void Enemy1Death(EnemyBase enemyToReturn)

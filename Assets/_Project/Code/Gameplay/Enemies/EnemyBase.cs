@@ -110,8 +110,15 @@ public class EnemyBase : MonoBehaviour, IDamageable, IPoolable
 
     public void FlipDirectionForEnemy02()
     {
-        Debug.Log("Y");
         projectileType = ProjectileType.Right;
+    }
+
+    public void FlipSprite()
+    {
+        Vector3 newScale = transform.localScale;
+        newScale.x = -newScale.x;
+        transform.localScale = newScale;
+
     }
 
     public void OnSpawnFromPool()
